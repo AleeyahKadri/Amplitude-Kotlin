@@ -9,14 +9,14 @@ apply(plugin = "org.jetbrains.dokka")
 
 // Use Android's built-in source jar for libraries, create custom one for non-Android modules
 if (project.plugins.findPlugin("com.android.library") == null) {
-    val sourceSets = project.extensions.getByType<SourceSetContainer>()
     tasks.register<Jar>("sourcesJar") {
         archiveClassifier.set("sources")
-        from(sourceSets["main"].allSource)
+        val sourceSets = project.extensions.getByType<SourceSetContainer>()
+        from(sourceSets.getByName("main").allJava)
     }
 }
 
-tasks.withType<org.jetbrains.dokka.gradle.DokkaTaskPartial>().configureEach {
+tasks.withType(org.jetbrains.dokka.gradle.DokkaTaskPartial::class.java).configureEach {
     pluginsMapConfiguration.set(
         mapOf("org.jetbrains.dokka.base.DokkaBase" to """{ "separateInheritedMembers": true}""")
     )
@@ -25,7 +25,7 @@ tasks.withType<org.jetbrains.dokka.gradle.DokkaTaskPartial>().configureEach {
 tasks.register<Jar>("javadocJar") {
     dependsOn("dokkaJavadoc")
     archiveClassifier.set("javadoc")
-    from(tasks.named("dokkaJavadoc").get().outputs)
+    from(tasks.named<org.jetbrains.dokka.gradle.DokkaTask>("dokkaJavadoc").get().outputDirectory)
 }
 
 val publishGroupId: String by project

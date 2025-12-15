@@ -9,6 +9,8 @@ extra["PUBLISH_ARTIFACT_ID"] = "analytics-android"
 
 apply(from = "$rootDir/gradle/publish-module.gradle.kts")
 
+val publishVersion: String by project
+
 android {
     namespace = "com.amplitude.android"
 
@@ -20,7 +22,6 @@ android {
         minSdk = 19
         targetSdk = 34
         
-        val publishVersion: String by project
         versionName = publishVersion
         buildConfigField("String", "AMPLITUDE_VERSION", "\"${version}\"")
 
