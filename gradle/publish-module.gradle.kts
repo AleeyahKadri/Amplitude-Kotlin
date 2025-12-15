@@ -30,9 +30,9 @@ tasks.register<Jar>("javadocJar") {
 
 val publishGroupId: String by project
 val publishVersion: String by project
-val publishName: String by project.extra
-val publishDescription: String by project.extra
-val publishArtifactId: String by project.extra
+val publishName = extra["PUBLISH_NAME"] as String
+val publishDescription = extra["PUBLISH_DESCRIPTION"] as String
+val publishArtifactId = extra["PUBLISH_ARTIFACT_ID"] as String
 
 group = publishGroupId
 version = publishVersion
