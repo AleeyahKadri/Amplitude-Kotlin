@@ -23,7 +23,7 @@ android {
         targetSdk = 34
         
         versionName = publishVersion
-        buildConfigField("String", "AMPLITUDE_VERSION", "\"${version}\"")
+        buildConfigField("String", "AMPLITUDE_VERSION", "\"$publishVersion\"")
 
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
