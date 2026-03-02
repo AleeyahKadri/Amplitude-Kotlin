@@ -1,3 +1,8 @@
+import org.gradle.api.publish.PublishingExtension
+import org.gradle.api.publish.maven.MavenPublication
+import org.gradle.plugins.signing.SigningExtension
+import org.gradle.api.tasks.SourceSetContainer
+
 apply(plugin = "maven-publish")
 apply(plugin = "signing")
 apply(plugin = "org.jetbrains.dokka")
