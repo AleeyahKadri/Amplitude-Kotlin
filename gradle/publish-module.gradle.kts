@@ -11,8 +11,10 @@ apply(plugin = "org.jetbrains.dokka")
 if (project.plugins.findPlugin("com.android.library") == null) {
     tasks.register<Jar>("sourcesJar") {
         archiveClassifier.set("sources")
-        from((project.extensions.getByName("sourceSets") as SourceSetContainer).named("main").get().java.srcDirs)
-        from((project.extensions.getByName("sourceSets") as SourceSetContainer).named("main").get().kotlin.srcDirs)
+        val sourceSets = project.extensions.getByName("sourceSets") as SourceSetContainer
+        val mainSourceSet = sourceSets.named("main").get()
+        from(mainSourceSet.java.srcDirs)
+        from(mainSourceSet.kotlin.srcDirs)
     }
 }
 
