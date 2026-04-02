@@ -11,6 +11,7 @@ import org.gradle.kotlin.dsl.register
 import org.gradle.plugins.signing.SigningExtension
 import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.dokka.gradle.DokkaTaskPartial
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 
 apply(plugin = "maven-publish")
 apply(plugin = "signing")
@@ -19,11 +20,16 @@ apply(plugin = "org.jetbrains.dokka")
 if (project.plugins.findPlugin("com.android.library") == null) {
     tasks.register<Jar>("sourcesJar") {
         archiveClassifier.set("sources")
-        from(the<SourceSetContainer>()["main"].allSource)
+        val main = the<SourceSetContainer>()["main"]
+        from(main.java.srcDirs)
+        val kotlinMain = extensions.findByType(KotlinJvmProjectExtension::class.java)
+            ?.sourceSets
+            ?.findByName("main")
+        kotlinMain?.kotlin?.srcDirs?.let { from(it) }
     }
 }
 
-tasks.withType(DokkaTaskPartial::class.java).configureEach {
+tasks.named<DokkaTaskPartial>("dokkaHtmlPartial") {
     pluginsMapConfiguration.set(
         mapOf("org.jetbrains.dokka.base.DokkaBase" to """{ "separateInheritedMembers": true}""")
     )
